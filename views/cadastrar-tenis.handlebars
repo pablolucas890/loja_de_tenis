@@ -1,32 +1,38 @@
 <section class="container">
     <h3> Cadastrar Tênis </h3>
     {{#if mensagem}}
-        <p style="color: {{ cor }};">
-            {{ mensagem }}
-        </p>
+    <p style="color: {{ cor }};">
+        {{ mensagem }}
+    </p>
     {{/if}}
     <form method="POST" action="/cadastrar-tenis">
         <div class="form-group">
             <label for="exampleFormControlSelect1">Sexo</label>
-            <select class="form-control" id="exampleFormControlSelect1" value=" {{ sexo }}", name="sexo">
-            <option>Feminino</option>
-            <option>Masculino</option>
+            <select class="form-control" id="exampleFormControlSelect1" value=" {{ sexo }}" , name="sexo">
+                <option>Feminino</option>
+                <option>Masculino</option>
             </select>
-        </div>    
+        </div>
         <div class="form-group">
             <label for="exampleFormControlInput1">Marca</label>
-            <input type="text" class="form-control" id="marca" placeholder="Nike" value="{{ marca }}" name="marca">
+            <select class="form-select"  id="marca" name="marca" aria-label="Default select example">
+                <option selected>Marca</option>
+                <option value="Adidas">Adidas</option>
+                <option value="Asics">Asics</option>
+                <option value="Nike">Nike</option>
+            </select>
         </div>
         <div>
             <label for="exampleFormControlInput1">Quantidade unitária</label>
-            <input type="text" class="form-control" id="qtde_unitaria" placeholder="30" value="{{ qtde_unitaria }}" name="qtde_unitaria">
-        </div>        
+            <input type="text" class="form-control" id="qtde_unitaria" placeholder="30" value="{{ qtde_unitaria }}"
+                name="qtde_unitaria">
+        </div>
         <div class="form-group">
             <label for="exampleFormControlSelect1">Identificação Estoque por Numeracao</label>
             <select class="form-control" id="id_estoque" value="{{ id_estoque }}" name="id_estoque">
-            {{#each listaIds}}
+                {{#each listaIds}}
                 <option value={{id}}>{{numeracao}}</option>
-            {{/each}}
+                {{/each}}
             </select>
         </div>
 

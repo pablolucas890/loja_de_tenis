@@ -34,7 +34,11 @@ async function query(sql = '', values = []) {
 }
 
 app.get("/", async function (request, response) {
-    const estoques_de_tenis = await query('SELECT * FROM estoque inner join tenis on (tenis.id_estoque = estoque.id)');
+    let estoques_de_tenis = await query('SELECT * FROM estoque inner join tenis on (tenis.id_estoque = estoque.id)');
+    estoques_de_tenis = estoques_de_tenis.map((tenis) => {
+        tenis.marca = tenis.marca.toUpperCase()
+        return tenis
+    })
     console.log(estoques_de_tenis)
     response.render('estoque-tenis', {
         data: 'data',
