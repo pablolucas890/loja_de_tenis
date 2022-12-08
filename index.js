@@ -18,9 +18,9 @@ app.use(express.json());
 async function getConnection() {
     const connection = await mysql.createConnection({
         host: 'localhost',
-        user: 'new_user',
-        password: 'password',
-        database: 'loja_de_tenis'
+        user: 'jadyla',
+        password: 'jadyla',
+        database: 'lojatenis'
     });
     return connection;
 }
@@ -165,10 +165,52 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
     response.render('cadastrar-fornecedor', dadosPagina);
 });
 
-app.get("/editar-fornecedor", async function (request, response) {
+app.get("/editar-fornecedor:id", async function (request, response) {
+    const id = parseInt(request.params.id);
+    const fornecedores = await query("SELECT * FROM fornecedor WHERE id = ?", [id]);
+    console.log(fornecedores)
+    if(fornecedores.length === 0){
+        response.redirect("fornecedores");
+        return;
+    }
+    const objTransacao = fornecedores[0];
+    console.log("/////" + objTransacao)
+    response.render('editar-fornecedor', {
+        objTransacao
+    });
+});
+
+app.post('/editar-fornecedor', async (request, response) => {
+    let {nome, cnpj, endereco, telefone, id} = request.body;
+    const dadosPagina = {
+        mensagem: '',
+        objTransacao: {nome: nome, cnpj: cnpj, endereco: endereco, telefone:telefone, id: id},        
+    }
+
+    try{
+        //console.log(request.body);
+        if(!nome) 
+            throw new Error('Nome obrigatório!');
+        
+        let sql = "UPDATE fornecedor SET nome = ?, cnpj = ?, endereco = ?, telefone = ? WHERE id = ?";
+        let valores = [nome, cnpj, endereco, telefone, id];
+        // atualiza os dados na base de dados
+        await query(sql, valores);       
+        dadosPagina.mensagem = 'Fornecedor atualizada com sucesso!';
+        dadosPagina.cor = "green";        
+    }
+    catch(e){
+        dadosPagina.mensagem = e.message;
+        dadosPagina.cor = "red";
+    }
+    response.render('editar-fornecedor', dadosPagina);
+   
+});
+
+app.get("/fornecedores", async function (request, response) {
     const fornecedores = await query('SELECT * FROM fornecedor');
     console.log(fornecedores)
-    response.render('editar-fornecedor', {
+    response.render('fornecedores', {
         fornecedores,
     })
 });

@@ -1,29 +1,31 @@
-<section class="container">
-    <h3>Editar Fornecedor</h3>
-    {{#if fornecedores}}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Nome</th>
-                    <th scope="col">CNPJ</th>
-                    <th scope="col">Telefone</th>
-                    <th scope="col">Endereço</th>
-                </tr>
-            </thead>
-            <ul>
-                {{#each fornecedores}}
-                    <tbody>
-                        <tr>
-                            <th scope="row"> {{ nome }} </th>
-                            <th scope="row"> {{ cnpj }} </th>
-                            <th scope="row"> {{ telefone }} </th>
-                            <th scope="row"> {{ endereco }} </th>
-                        </tr>
-                    </tbody>
-                {{/each}}
-            </ul>
-        </table>
-    {{else}}
-        <p>Não há estoques cadastrados para serem exibidos!</p>
-    {{/if}}
-</section>
+<h1>Editar Fornecedor</h1>
+
+{{#if mensagem}}
+    <p style="color: {{ cor }};">
+        {{ mensagem }}
+    </p>
+{{/if}}
+
+    <form method="POST" action="/editar-fornecedor">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Nome</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nike" value="{{ objTransacao.nome }}" name="nome">
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj" placeholder="XX.XXX.XXX/0001-XX" value="{{ objTransacao.cnpj }}" name="cnpj">
+        </div>        
+        <div>
+            <label for="exampleFormControlInput1">Endereço</label>
+            <input type="text" class="form-control" id="endereco" placeholder="Minas Gerais" value="{{ objTransacao.endereco }}" name="endereco">
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">Telefone</label>
+            <input type="text" class="form-control" id="telefone" placeholder="(35)3333-3333" value="{{ objTransacao.telefone }}" name="telefone">
+        </div>
+
+        <button type="submit" class="btn btn-success" style="margin-top: 20px;">Salvar</button>
+        <a class="btn btn-danger" href="/" role="button" style="margin-top: 20px;">Cancelar</a>
+        <a class="btn btn-primary" href="/" role="button" style="margin-top: 20px;" id="voltar">Voltar</a>
+        <input type="hidden" name="id" value="{{objTransacao.id}}">
+    </form>

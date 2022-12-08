@@ -1,0 +1,36 @@
+<section class="container">
+     <section class="topo-nome-cadastro float-right">
+        <h3>Fornecedores</h3>
+        <h6 class="novoForn"><a class="linkNovoForn" href="/cadastrar-fornecedor">Novo</a></h6>
+    </section>
+    {{#if fornecedores}}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">CNPJ</th>
+                    <th scope="col">Telefone</th>
+                    <th scope="col">Endereço</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <ul>
+                {{#each fornecedores}}
+                    <tbody>
+                        <tr>
+                            <th scope="row"> {{ nome }} </th>
+                            <th scope="row"> {{ cnpj }} </th>
+                            <th scope="row"> {{ telefone }} </th>
+                            <th scope="row"> {{ endereco }} </th>
+                            <th>
+                                <a href="/editar-fornecedor/{{{ id }}}">Editar</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                {{/each}}
+            </ul>
+        </table>
+    {{else}}
+        <p>Não há estoques cadastrados para serem exibidos!</p>
+    {{/if}}
+</section>

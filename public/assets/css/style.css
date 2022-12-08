@@ -1,3 +1,32 @@
 section{
     margin: 40px 0px;
 }
+
+.topo-nome-cadastro{
+    display: flex;
+}
+
+.novoForn{
+    font-size: 15px;
+    margin-left: 840px;
+    margin-right: 20px;
+    background-color: #fe5b52;
+    padding: 14px;
+    text-align: center;
+    border-radius: 8px;
+    color: white;
+}
+
+.novoForn:hover{
+    transform: scale(1.08);
+    background-color: #fe5b52;
+}
+
+.linkNovoForn{
+    text-decoration: none;
+    color: white;
+}
+
+.linkNovoForn:hover{
+    color: white;
+}
