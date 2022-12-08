@@ -18,9 +18,9 @@ app.use(express.json());
 async function getConnection() {
     const connection = await mysql.createConnection({
         host: 'localhost',
-        user: 'jadyla',
-        password: 'jadyla',
-        database: 'lojatenis'
+        user: 'new_user',
+        password: 'password',
+        database: 'loja_de_tenis'
     });
     return connection;
 }
@@ -39,7 +39,6 @@ app.get("/", async function (request, response) {
         tenis.marca = tenis.marca.toUpperCase()
         return tenis
     })
-    console.log(estoques_de_tenis)
     response.render('estoque-tenis', {
         data: 'data',
         estoques_de_tenis,
@@ -88,13 +87,11 @@ app.post('/cadastrar-tenis', async (request, response) => {
 
         let sql = "INSERT INTO tenis(sexo, marca, qtde_unitaria, id_estoque) VALUES (?, ?, ?, ?)";
         let valores = [sexo, marca, qtde_unitaria, id_estoque];
-        console.log(valores)
         // insere os dados na base de dados
         await query(sql, valores);
 
         sql = "UPDATE estoque SET qte_total = qte_total + ? WHERE id = ?";
         valores = [qtde_unitaria, id_estoque];
-        console.log(valores)
         // insere os dados na base de dados
         await query(sql, valores);
 
@@ -106,12 +103,6 @@ app.post('/cadastrar-tenis', async (request, response) => {
         dadosPagina.cor = "red";
     }
     response.render('cadastrar-tenis', dadosPagina);
-});
-
-app.get("/editar-tenis", async function (request, response) {
-    response.render('editar-tenis', {
-        data: 'data',
-    })
 });
 
 app.get("/editar-estoque", async function (request, response) {
@@ -156,7 +147,6 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
 
         let sql = "INSERT INTO fornecedor(nome, cnpj, endereco, telefone) VALUES (?, ?, ?, ?)";
         let valores = [nome, cnpj, endereco, telefone];
-        console.log(valores)
         // insere os dados na base de dados
         await query(sql, valores);
         dadosPagina.mensagem = 'Fornecedor Cadastrado com sucesso!';
@@ -189,7 +179,6 @@ app.post('/cadastrar-estoque', async (request, response) => {
 
         let sql = "INSERT INTO estoque(numeracao, qte_total) VALUES (?, ?)";
         let valores = [numeracao, qtde];
-        console.log(valores)
         // insere os dados na base de dados
         await query(sql, valores);
         dadosPagina.mensagem = 'Estoque Cadastrado com sucesso!';
@@ -205,65 +194,125 @@ app.post('/cadastrar-estoque', async (request, response) => {
 app.get("/editar-fornecedor/:id", async function (request, response) {
     const id = parseInt(request.params.id);
     const fornecedores = await query("SELECT * FROM fornecedor WHERE id = ?", [id]);
-    console.log(fornecedores)
-    if(fornecedores.length === 0){
+    if (fornecedores.length === 0) {
         response.redirect("fornecedores");
         return;
     }
     const objTransacao = fornecedores[0];
-    console.log("/////" + objTransacao)
     response.render('editar-fornecedor', {
-        objTransacao
+        objTransacao,
+        path: "../"
+    });
+});
+
+app.get("/editar-tenis/:id", async function (request, response) {
+    const id = parseInt(request.params.id);
+    const tenis = await query("SELECT * FROM tenis WHERE id = ?", [id]);
+    if (tenis.length === 0) {
+        response.redirect("listar-tenis");
+        return;
+    }
+    let marcas = [
+        { nome: 'Adidas', selected: false },
+        { nome: 'Asics', selected: false },
+        { nome: 'Nike', selected: false }]
+    marcas = marcas.map((marca) => {
+        if (marca.nome === tenis[0].marca)
+            marca.selected = true
+        return marca
+    })
+    let sexos = [
+        { nome: 'Feminino', value: 'F', selected: false },
+        { nome: 'Masculino', value: 'M', selected: false }]
+    sexos = sexos.map((sexo) => {
+        if (sexo.value === tenis[0].sexo)
+            sexo.selected = true
+        return sexo
+    })
+    response.render('editar-tenis', {
+        qtde_unitaria: tenis[0].qtde_unitaria,
+        marcas,
+        sexos,
+        id: tenis[0].id,
+        path: "../"
     });
 });
 
 app.post('/editar-fornecedor', async (request, response) => {
-    let {nome, cnpj, endereco, telefone, id} = request.body;
+    let { nome, cnpj, endereco, telefone, id } = request.body;
     const dadosPagina = {
         mensagem: '',
-        objTransacao: {nome: nome, cnpj: cnpj, endereco: endereco, telefone:telefone, id: id},        
+        objTransacao: { nome: nome, cnpj: cnpj, endereco: endereco, telefone: telefone, id: id },
     }
 
-    try{
-        //console.log(request.body);
-        if(!nome) 
+    try {
+        if (!nome)
             throw new Error('Nome obrigatório!');
-        
+
         let sql = "UPDATE fornecedor SET nome = ?, cnpj = ?, endereco = ?, telefone = ? WHERE id = ?";
         let valores = [nome, cnpj, endereco, telefone, id];
         // atualiza os dados na base de dados
-        await query(sql, valores);       
+        await query(sql, valores);
         dadosPagina.mensagem = 'Fornecedor atualizada com sucesso!';
-        dadosPagina.cor = "green";        
+        dadosPagina.cor = "green";
     }
-    catch(e){
+    catch (e) {
         dadosPagina.mensagem = e.message;
         dadosPagina.cor = "red";
     }
     response.render('editar-fornecedor', dadosPagina);
-   
+
 });
 
+app.post('/editar-tenis', async (request, response) => {
+    let { sexo, marca, qtde_unitaria, id } = request.body;
+    const dadosPagina = {
+        mensagem: '',
+        objTransacao: { sexo: sexo, marca: marca, qtde_unitaria: qtde_unitaria, id: id },
+    }
+
+    try {
+        if (!sexo)
+            throw new Error('Sexo obrigatório!');
+        if (!marca)
+            throw new Error('Marca obrigatório!');
+        if (!qtde_unitaria)
+            throw new Error('Qunatidade obrigatório!');
+
+        let sql = "UPDATE tenis SET sexo = ?, marca = ?, qtde_unitaria = ? WHERE id = ?";
+        let valores = [sexo, marca, qtde_unitaria, id];
+        // atualiza os dados na base de dados
+        await query(sql, valores);
+        dadosPagina.mensagem = 'Tenis atualizado com sucesso!';
+        dadosPagina.cor = "green";
+    }
+    catch (e) {
+        dadosPagina.mensagem = e.message;
+        dadosPagina.cor = "red";
+    }
+    const tenis = await query('SELECT * FROM estoque inner join tenis on (tenis.id_estoque = estoque.id)');
+    response.render('listar-tenis', {
+        tenis,
+    })
+
+});
 app.get("/fornecedores", async function (request, response) {
     const fornecedores = await query('SELECT * FROM fornecedor');
-    console.log(fornecedores)
     response.render('fornecedores', {
         fornecedores,
     })
 });
 
 app.get("/listar-tenis", async function (request, response) {
-    const tenis = await query('SELECT * FROM tenis');
-    console.log(tenis)
+    const tenis = await query('SELECT * FROM estoque inner join tenis on (tenis.id_estoque = estoque.id)');
     response.render('listar-tenis', {
         tenis,
     })
 });
 
-app.get("/excluir-fornecedor/:id", async function(request, response){
+app.get("/excluir-fornecedor/:id", async function (request, response) {
     const id = parseInt(request.params.id);
-    //console.log(id)
-    if(!isNaN(id) && id >= 0){
+    if (!isNaN(id) && id >= 0) {
         // ` - Template String
         await query('DELETE FROM fornece WHERE id_fornecedor = ?', [id])
         await query('DELETE FROM fornecedor WHERE id = ?', [id]);
@@ -271,10 +320,9 @@ app.get("/excluir-fornecedor/:id", async function(request, response){
     response.redirect('/');
 });
 
-app.get("/excluir-tenis/:id", async function(request, response){
+app.get("/excluir-tenis/:id", async function (request, response) {
     const id = parseInt(request.params.id);
-    //console.log(id)
-    if(!isNaN(id) && id >= 0){
+    if (!isNaN(id) && id >= 0) {
         // ` - Template String
         await query('DELETE FROM tenis WHERE id = ?', [id]);
     }

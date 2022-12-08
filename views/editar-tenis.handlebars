@@ -1,19 +1,45 @@
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>Pagina Editar Tenis</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<hr>
+<section class="container py-5">
+    <h3> Editar Tênis </h3>
+    {{#if mensagem}}
+    <p style="color: {{ cor }};">
+        {{ mensagem }}
+    </p>
+    {{/if}}
+    <form method="POST" action="/editar-tenis">
+        <input type="hidden" name="id" value="{{id}}">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Sexo</label>
+            <select class="form-control" id="exampleFormControlSelect1" value=" {{ sexo }}" , name="sexo">
+                {{#each sexos}}
+                {{#if selected}}
+                <option value={{value}} selected>{{nome}}</option>
+                {{else}}
+                <option value={{value}}>{{nome}}</option>
+                {{/if}}
+                {{/each}}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Marca</label>
+
+            <select class="form-select" id="marca" name="marca" aria-label="Default select example">
+                {{#each marcas}}
+                {{#if selected}}
+                <option value={{nome}} selected>{{nome}}</option>
+                {{else}}
+                <option value={{nome}}>{{nome}}</option>
+                {{/if}}
+                {{/each}}
+            </select>
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">Quantidade unitária</label>
+            <input type="number" class="form-control" id="qtde_unitaria" placeholder="30" value="{{ qtde_unitaria }}"
+                name="qtde_unitaria">
+        </div>
+
+        <button type="submit" class="btn btn-success" style="margin-top: 20px;">Editar</button>
+        <a class="btn btn-danger" href="/" role="button" style="margin-top: 20px;">Cancelar</a>
+        <a class="btn btn-primary" href="/" role="button" style="margin-top: 20px;" id="voltar">Voltar</a>
+    </form>
+</section>

@@ -1,33 +1,28 @@
 <section class="container">
-     <section class="topo-nome-cadastro float-right">
+    <section class="topo-nome-cadastro float-right">
         <h3>Estoque</h3>
         <h6 class="novoForn"><a class="linkNovoForn" href="/cadastrar-estoque">Novo</a></h6>
     </section>
     {{#if listaEstoques}}
-        <table class="table table-striped">
-            <thead>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Numeração ex (38/39)</th>
+                <th scope="col">Quantidade Total desta Numeracao</th>
+            </tr>
+        </thead>
+        <ul>
+            {{#each listaEstoques}}
+            <tbody>
                 <tr>
-                    <th scope="col">Numeração ex (38/39)</th>
-                    <th scope="col">Quantidade Total desta Numeracao</th>
-                    <th scope="col"></th>
+                    <td> {{{ numeracao }}} </td>
+                    <td> {{ qte_total }} </td>
                 </tr>
-            </thead>
-            <ul>
-                {{#each listaEstoques}}
-                    <tbody>
-                        <tr>
-                            <td> {{{ numeracao }}} </td>
-                            <td> {{ qte_total }} </td>
-                            <td>
-                                <!--<a href="/editar-estoque/{{{ id }}}">Editar</a> |-->
-                                <!--<a href="/excluir-estoque/{{ id }}">Excluir</a> -->
-                            </td>
-                        </tr>
-                    </tbody>
-                {{/each}}
-            </ul>
-        </table>
+            </tbody>
+            {{/each}}
+        </ul>
+    </table>
     {{else}}
-        <p>Não há estoques cadastrados para serem exibidos!</p>
+    <p>Não há estoques cadastrados para serem exibidos!</p>
     {{/if}}
 </section>

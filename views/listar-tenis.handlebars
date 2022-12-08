@@ -4,14 +4,14 @@
         <h6 class="novoForn"><a class="linkNovoForn" href="/cadastrar-tenis">Novo</a></h6>
     </section>
     {{#if tenis}}
-        <table class="table table-striped">
+        <table class="border table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Sexo</th>
                     <th scope="col">Marca</th>
                     <th scope="col">Quantidade Unitária</th>
-                    <th scope="col">Estoque</th>
-                    <th scope="col"> </th>
+                    <th scope="col">Numeração</th>
+                    <th scope="col">Editar | Excluir</th>
                 </tr>
             </thead>
             <ul>
@@ -21,7 +21,7 @@
                             <th scope="row"> {{ sexo }} </th>
                             <th scope="row"> {{ marca }} </th>
                             <th scope="row"> {{ qtde_unitaria }} </th>
-                            <th scope="row"> {{ id_estoque }} </th>
+                            <th scope="row"> {{ numeracao }} </th>
                             <th>
                                 <a href="/editar-tenis/{{{ id }}}">Editar</a> |
                                 <a href="/excluir-tenis/{{ id }}">Excluir</a>

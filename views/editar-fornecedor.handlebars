@@ -1,12 +1,10 @@
-<section class="container">
-<h3>Editar Fornecedor</h3>
-
-{{#if mensagem}}
-    <p style="color: {{ cor }};">
-        {{ mensagem }}
-    </p>
-{{/if}}
-
+<section class="container py-5">
+    <h3>Editar Fornecedor</h3>
+    {{#if mensagem}}
+        <p style="color: {{ cor }};">
+            {{ mensagem }}
+        </p>
+    {{/if}}
     <form method="POST" action="/editar-fornecedor">
         <div class="form-group">
             <label for="exampleFormControlInput1">Nome</label>

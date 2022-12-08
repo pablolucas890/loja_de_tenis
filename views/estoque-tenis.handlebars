@@ -6,16 +6,31 @@
         <div class="card text-left border my-2 bg-light col-4">
             <img class="card-img-top" src="holder.js/100px180/" alt="">
             <div class="card-body">
-                <h4 class="card-title">
-                    {{ marca }} - {{{ sexo }}} - {{{ numeracao }}}
-                </h4>
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="card-title">
+                            MARCA: {{ marca }}
+                        </h4>
+                        <h6 class="card-subttitleitle">
+                            SEXO - {{{ sexo }}}
+                        </h6>
+                        <h6 class="card-subttitleitle">
+                            NUMERAÇÃO - {{{ numeracao }}}
+                        </h6>
+                    </div>
+                    <div class="col-4">
+                        <h6 class="card-title text-danger">
+                            RESTAM: {{ qtde_unitaria }}
+                        </h6>
+                    </div>
+                </div>
                 <p class="card-text">
-                    <button type="button" class="btn btn-outline-secondary w-100">
-                        <a name="" id="" class="btn btn-info w-75" href="" role="button">
-                            <p>Quantidade: {{ qtde_unitaria }}</p>
-                        </a>
+                    <button type="button" class="btn btn-outline-secondary w-100 mb-2">
+                        <h5>
+                            Comprar
+                        </h5>
                     </button>
-                    <img src="assets/img/{{ marca }}.png" class="img-fluid" alt="">
+                    <img src="assets/img/{{ marca }}.png" class="img-fluid rounded-top" alt="">
                 </p>
             </div>
         </div>
