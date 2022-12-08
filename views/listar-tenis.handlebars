@@ -1,0 +1,37 @@
+<section class="container">
+     <section class="topo-nome-cadastro float-right">
+        <h3>Listagem Tênis</h3>
+        <h6 class="novoForn"><a class="linkNovoForn" href="/cadastrar-tenis">Novo</a></h6>
+    </section>
+    {{#if tenis}}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Sexo</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Quantidade Unitária</th>
+                    <th scope="col">Estoque</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <ul>
+                {{#each tenis}}
+                    <tbody>
+                        <tr>
+                            <th scope="row"> {{ sexo }} </th>
+                            <th scope="row"> {{ marca }} </th>
+                            <th scope="row"> {{ qtde_unitaria }} </th>
+                            <th scope="row"> {{ id_estoque }} </th>
+                            <th>
+                                <a href="/editar-tenis/{{{ id }}}">Editar</a> |
+                                <a href="/excluir-tenis/{{ id }}">Excluir</a>
+                            </th>
+                        </tr>
+                    </tbody>
+                {{/each}}
+            </ul>
+        </table>
+    {{else}}
+        <p>Não há tênis cadastrados para serem exibidos!</p>
+    {{/if}}
+</section>

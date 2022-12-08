@@ -169,7 +169,40 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
     response.render('cadastrar-fornecedor', dadosPagina);
 });
 
-app.get("/editar-fornecedor:id", async function (request, response) {
+app.get("/cadastrar-estoque", async function (request, response) {
+    response.render('cadastrar-estoque', {
+        data: 'data',
+    })
+});
+
+app.post('/cadastrar-estoque', async (request, response) => {
+    let numeracao = request.body.numeracao;
+    let qtde = 0;
+    dadosPagina = {
+        mensagem: '',
+        numeracao
+    }
+
+    try {
+        if (!numeracao)
+            throw new Error('Numeração é obrigatório!');
+
+        let sql = "INSERT INTO estoque(numeracao, qte_total) VALUES (?, ?)";
+        let valores = [numeracao, qtde];
+        console.log(valores)
+        // insere os dados na base de dados
+        await query(sql, valores);
+        dadosPagina.mensagem = 'Estoque Cadastrado com sucesso!';
+        dadosPagina.cor = "green";
+    }
+    catch (error) {
+        dadosPagina.mensagem = error.message;
+        dadosPagina.cor = "red";
+    }
+    response.render('cadastrar-estoque', dadosPagina);
+});
+
+app.get("/editar-fornecedor/:id", async function (request, response) {
     const id = parseInt(request.params.id);
     const fornecedores = await query("SELECT * FROM fornecedor WHERE id = ?", [id]);
     console.log(fornecedores)
@@ -217,6 +250,35 @@ app.get("/fornecedores", async function (request, response) {
     response.render('fornecedores', {
         fornecedores,
     })
+});
+
+app.get("/listar-tenis", async function (request, response) {
+    const tenis = await query('SELECT * FROM tenis');
+    console.log(tenis)
+    response.render('listar-tenis', {
+        tenis,
+    })
+});
+
+app.get("/excluir-fornecedor/:id", async function(request, response){
+    const id = parseInt(request.params.id);
+    //console.log(id)
+    if(!isNaN(id) && id >= 0){
+        // ` - Template String
+        await query('DELETE FROM fornece WHERE id_fornecedor = ?', [id])
+        await query('DELETE FROM fornecedor WHERE id = ?', [id]);
+    }
+    response.redirect('/');
+});
+
+app.get("/excluir-tenis/:id", async function(request, response){
+    const id = parseInt(request.params.id);
+    //console.log(id)
+    if(!isNaN(id) && id >= 0){
+        // ` - Template String
+        await query('DELETE FROM tenis WHERE id = ?', [id]);
+    }
+    response.redirect('/');
 });
 
 app.listen(PORT, function () {

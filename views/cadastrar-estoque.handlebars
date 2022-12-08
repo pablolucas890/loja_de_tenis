@@ -1,0 +1,18 @@
+<section class="container">
+    <h3> Cadastrar Estoque </h3>
+    {{#if mensagem}}
+        <p style="color: {{ cor }};">
+            {{ mensagem }}
+        </p>
+    {{/if}}
+    <form method="POST" action="/cadastrar-estoque">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Numeração</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="37" value="{{ numeracao }}" name="numeracao">
+        </div>
+
+        <button type="submit" class="btn btn-success" style="margin-top: 20px;">Cadastrar</button>
+        <a class="btn btn-danger" href="/editar-estoque" role="button" style="margin-top: 20px;">Cancelar</a>
+        <a class="btn btn-primary" href="/editar-estoque" role="button" style="margin-top: 20px;" id="voltar">Voltar</a>
+    </form>
+</section>
