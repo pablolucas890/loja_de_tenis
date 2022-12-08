@@ -43,7 +43,7 @@ INSERT INTO compra(id_cliente, data_compra, valor)value(3,STR_TO_DATE('03/05/201
 
 ALTER TABLE tenis add id_estoque int;
 ALTER TABLE tenis add foreign key(id_estoque) references estoque(id);
-INSERT INTO tenis(sexo, marca, id_estoque, qtde_unitaria)values('F', 'Adidas', 1,4),('M','Nike',1,3),('M','Asics',2,8),('F','Nike', 3, 5);
+INSERT INTO tenis(sexo, marca, id_estoque, qtde_unitaria)values('F', 'Adidas', 1,19),('M','Nike',1,21),('M','Asics',2,38),('F','Nike', 3, 42);
 
 INSERT INTO fornece(id_tenis, id_fornecedor,data ,quantidade)values(1,1,STR_TO_DATE('07/02/2017', '%d/%m/%Y'),30),
 (2,1,STR_TO_DATE('08/02/2017', '%d/%m/%Y'),40),

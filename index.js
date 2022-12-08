@@ -4,7 +4,7 @@ const path = require('path');
 var url = require('url');
 const mysql = require('mysql2/promise');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3333;
 const app = express();
 
 app.engine('handlebars', expressHandlebars.engine());
@@ -102,7 +102,7 @@ app.post('/cadastrar-tenis', async (request, response) => {
         dadosPagina.mensagem = error.message;
         dadosPagina.cor = "red";
     }
-    response.render('cadastrar-tenis', dadosPagina);
+    response.redirect('/')
 });
 
 app.get("/editar-estoque", async function (request, response) {
@@ -266,11 +266,11 @@ app.post('/editar-fornecedor', async (request, response) => {
 
 app.post('/editar-tenis', async (request, response) => {
     let { sexo, marca, qtde_unitaria, id } = request.body;
+    const oldTenis = await query('SELECT * FROM tenis WHERE id = ?', [id]);
     const dadosPagina = {
         mensagem: '',
         objTransacao: { sexo: sexo, marca: marca, qtde_unitaria: qtde_unitaria, id: id },
     }
-
     try {
         if (!sexo)
             throw new Error('Sexo obrigatório!');
@@ -280,6 +280,10 @@ app.post('/editar-tenis', async (request, response) => {
             throw new Error('Qunatidade obrigatório!');
 
         let sql = "UPDATE tenis SET sexo = ?, marca = ?, qtde_unitaria = ? WHERE id = ?";
+        await query('UPDATE estoque set qte_total=qte_total-? WHERE id = ?',
+            [oldTenis[0].qtde_unitaria, oldTenis[0].id_estoque]);
+        await query('UPDATE estoque set qte_total=qte_total+? WHERE id = ?',
+            [qtde_unitaria, oldTenis[0].id_estoque]);
         let valores = [sexo, marca, qtde_unitaria, id];
         // atualiza os dados na base de dados
         await query(sql, valores);
@@ -316,15 +320,6 @@ app.get("/excluir-fornecedor/:id", async function (request, response) {
         // ` - Template String
         await query('DELETE FROM fornece WHERE id_fornecedor = ?', [id])
         await query('DELETE FROM fornecedor WHERE id = ?', [id]);
-    }
-    response.redirect('/');
-});
-
-app.get("/excluir-tenis/:id", async function (request, response) {
-    const id = parseInt(request.params.id);
-    if (!isNaN(id) && id >= 0) {
-        // ` - Template String
-        await query('DELETE FROM tenis WHERE id = ?', [id]);
     }
     response.redirect('/');
 });
