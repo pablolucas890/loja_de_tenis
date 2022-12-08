@@ -1,19 +1,30 @@
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>Pagina Cadastrar Fornecedor</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<hr>
+<section class="container">
+    <h3> Cadastrar Fornecedor </h3>
+    {{#if mensagem}}
+        <p style="color: {{ cor }};">
+            {{ mensagem }}
+        </p>
+    {{/if}}
+    <form method="POST" action="/cadastrar-fornecedor">
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Nome</label>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nike" value="{{ nome }}" name="nome">
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">CNPJ</label>
+            <input type="text" class="form-control" id="cnpj" placeholder="XX.XXX.XXX/0001-XX" value="{{ cnpj }}" name="cnpj">
+        </div>        
+        <div>
+            <label for="exampleFormControlInput1">Endereço</label>
+            <input type="text" class="form-control" id="endereco" placeholder="Minas Gerais" value="{{ endereco }}" name="endereco">
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">Telefone</label>
+            <input type="text" class="form-control" id="telefone" placeholder="(35)3333-3333" value="{{ telefone }}" name="telefone">
+        </div>
+
+        <button type="submit" class="btn btn-success" style="margin-top: 20px;">Cadastrar</button>
+        <a class="btn btn-danger" href="/" role="button" style="margin-top: 20px;">Cancelar</a>
+        <a class="btn btn-primary" href="/" role="button" style="margin-top: 20px;" id="voltar">Voltar</a>
+    </form>
+</section>

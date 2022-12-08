@@ -1,19 +1,37 @@
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>Pagina Cadastrar Tenis</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<hr>
+<section class="container">
+    <h3> Cadastrar Tênis </h3>
+    {{#if mensagem}}
+        <p style="color: {{ cor }};">
+            {{ mensagem }}
+        </p>
+    {{/if}}
+    <form method="POST" action="/cadastrar-tenis">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Sexo</label>
+            <select class="form-control" id="exampleFormControlSelect1" value=" {{ sexo }}", name="sexo">
+            <option>Feminino</option>
+            <option>Masculino</option>
+            </select>
+        </div>    
+        <div class="form-group">
+            <label for="exampleFormControlInput1">Marca</label>
+            <input type="text" class="form-control" id="marca" placeholder="Nike" value="{{ marca }}" name="marca">
+        </div>
+        <div>
+            <label for="exampleFormControlInput1">Quantidade unitária</label>
+            <input type="text" class="form-control" id="qtde_unitaria" placeholder="30" value="{{ qtde_unitaria }}" name="qtde_unitaria">
+        </div>        
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Identificação Estoque</label>
+            <select class="form-control" id="id_estoque" value="{{ id_estoque }}" name="id_estoque">
+            {{#each listaIds}}
+                <option>{{ id }}</option>
+            {{/each}}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success" style="margin-top: 20px;">Cadastrar</button>
+        <a class="btn btn-danger" href="/" role="button" style="margin-top: 20px;">Cancelar</a>
+        <a class="btn btn-primary" href="/" role="button" style="margin-top: 20px;" id="voltar">Voltar</a>
+    </form>
+</section>

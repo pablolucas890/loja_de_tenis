@@ -1,19 +1,32 @@
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>Pagina Editar Estoque</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<hr>
+<section class="container">
+    <h3>Editar Estoque</h3>
+    {{#if listaEstoques}}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Estoque #id</th>
+                    <th scope="col">Numeração</th>
+                    <th scope="col">Quantidade Total</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <ul>
+                {{#each listaEstoques}}
+                    <tbody>
+                        <tr>
+                            <th scope="row"> {{ id }} </th>
+                            <td> {{{ numeracao }}} </td>
+                            <td> {{ qte_total }} </td>
+                            <td>
+                                <!--<a href="/editar-estoque/{{{ id }}}">Editar</a> |-->
+                                <!--<a href="/excluir-estoque/{{ id }}">Excluir</a> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                {{/each}}
+            </ul>
+        </table>
+    {{else}}
+        <p>Não há estoques cadastrados para serem exibidos!</p>
+    {{/if}}
+</section>
