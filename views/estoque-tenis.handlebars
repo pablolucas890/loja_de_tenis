@@ -1,19 +1,29 @@
-<hr>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<h1>Pagina Estoque de Tenis</h1>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<hr>
+<section class="container">
+    <h3>Estoque de Tenis</h3>
+    {{#if estoques_de_tenis}}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Sexo</th>
+                    <th scope="col">Numeração</th>
+                    <th scope="col">Quantidade Deste Tenis</th>
+                </tr>
+            </thead>
+            <ul>
+                {{#each estoques_de_tenis}}
+                    <tbody>
+                        <tr>
+                            <th scope="row"> {{ marca }} </th>
+                            <td> {{{ sexo }}} </td>
+                            <td> {{{ numeracao }}} </td>
+                            <td> {{ qtde_unitaria }} </td>
+                        </tr>
+                    </tbody>
+                {{/each}}
+            </ul>
+        </table>
+    {{else}}
+        <p>Não há estoques cadastrados para serem exibidos!</p>
+    {{/if}}
+</section>

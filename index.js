@@ -18,9 +18,9 @@ app.use(express.json());
 async function getConnection() {
     const connection = await mysql.createConnection({
         host: 'localhost',
-        user: 'jadyla',
-        password: 'jadyla',
-        database: 'lojatenis'
+        user: 'new_user',
+        password: 'password',
+        database: 'loja_de_tenis'
     });
     return connection;
 }
@@ -34,8 +34,11 @@ async function query(sql = '', values = []) {
 }
 
 app.get("/", async function (request, response) {
+    const estoques_de_tenis = await query('SELECT * FROM estoque inner join tenis on (tenis.id_estoque = estoque.id)');
+    console.log(estoques_de_tenis)
     response.render('estoque-tenis', {
         data: 'data',
+        estoques_de_tenis,
     })
 });
 
@@ -60,22 +63,22 @@ app.post('/cadastrar-tenis', async (request, response) => {
         id_estoque
     }
 
-    try{
-        if(!sexo) 
+    try {
+        if (!sexo)
             throw new Error('Sexo é obrigatório!');
 
-        if(!marca)
+        if (!marca)
             throw new Error('Marca é obrigatório!');
 
-        if(!qtde_unitaria)
+        if (!qtde_unitaria)
             throw new Error('Quantidade é obrigatório!');
 
-        if(!id_estoque)
-            throw new Error('Estoque é obrigatório!');           
-            
-        if(sexo == 'Feminino'){
+        if (!id_estoque)
+            throw new Error('Estoque é obrigatório!');
+
+        if (sexo == 'Feminino') {
             sexo = 'F';
-        }else{
+        } else {
             sexo = 'M';
         }
 
@@ -84,10 +87,17 @@ app.post('/cadastrar-tenis', async (request, response) => {
         console.log(valores)
         // insere os dados na base de dados
         await query(sql, valores);
+
+        sql = "UPDATE estoque SET qte_total = qte_total + ? WHERE id = ?";
+        valores = [qtde_unitaria, id_estoque];
+        console.log(valores)
+        // insere os dados na base de dados
+        await query(sql, valores);
+
         dadosPagina.mensagem = 'Tênis Cadastrado com sucesso!';
         dadosPagina.cor = "green";
     }
-    catch(error){
+    catch (error) {
         dadosPagina.mensagem = error.message;
         dadosPagina.cor = "red";
     }
@@ -127,18 +137,18 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
         telefone
     }
 
-    try{
-        if(!nome) 
+    try {
+        if (!nome)
             throw new Error('Nome é obrigatório!');
 
-        if(!cnpj)
+        if (!cnpj)
             throw new Error('CNPJ é obrigatório!');
 
-        if(!endereco)
+        if (!endereco)
             throw new Error('Endereço é obrigatório!');
 
-        if(!telefone)
-            throw new Error('Telefone é obrigatório!');            
+        if (!telefone)
+            throw new Error('Telefone é obrigatório!');
 
         let sql = "INSERT INTO fornecedor(nome, cnpj, endereco, telefone) VALUES (?, ?, ?, ?)";
         let valores = [nome, cnpj, endereco, telefone];
@@ -148,7 +158,7 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
         dadosPagina.mensagem = 'Fornecedor Cadastrado com sucesso!';
         dadosPagina.cor = "green";
     }
-    catch(error){
+    catch (error) {
         dadosPagina.mensagem = error.message;
         dadosPagina.cor = "red";
     }
@@ -156,8 +166,10 @@ app.post('/cadastrar-fornecedor', async (request, response) => {
 });
 
 app.get("/editar-fornecedor", async function (request, response) {
+    const fornecedores = await query('SELECT * FROM fornecedor');
+    console.log(fornecedores)
     response.render('editar-fornecedor', {
-        data: 'data',
+        fornecedores,
     })
 });
 
